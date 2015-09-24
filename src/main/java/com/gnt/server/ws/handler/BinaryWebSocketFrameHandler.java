@@ -28,6 +28,7 @@ public class BinaryWebSocketFrameHandler extends SimpleChannelInboundHandler<Bin
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception {
         logger.info("message: {}", msg);
+        ctx.channel().writeAndFlush(msg.retain());
     }
 
     @Override
