@@ -6,10 +6,12 @@ import akka.actor.ActorSystem;
  * Created by leducthien on 9/24/15.
  */
 public class Akka {
-    private static final ActorSystem actorSystem;
+    private static ActorSystem actorSystem;
 
-    static {
-        actorSystem = ActorSystem.create(Configuration.getAkkaSystemName(), Configuration.getConfig());
+    public static void init() {
+        if (actorSystem == null) {
+            actorSystem = ActorSystem.create(Configuration.getAkkaSystemName(), Configuration.getConfig());
+        }
     }
 
     public static ActorSystem system() {
@@ -17,6 +19,8 @@ public class Akka {
     }
 
     public static void destroy() {
-        actorSystem.shutdown();
+        if (actorSystem != null) {
+            actorSystem.shutdown();
+        }
     }
 }

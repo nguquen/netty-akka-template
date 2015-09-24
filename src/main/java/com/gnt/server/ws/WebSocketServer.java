@@ -21,19 +21,16 @@ public class WebSocketServer {
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private Channel channel;
     private final String path;
-    private final ActorRef channelManagerActor;
 
     public WebSocketServer(String path) {
         this.path = path;
-        // init manager actor
-        channelManagerActor = Akka.system().actorOf(Props.create(ChannelManagerActor.class), "channelManager");
     }
 
     public ChannelFuture start(InetSocketAddress address) {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup);
         bootstrap.channel(NioServerSocketChannel.class);
-        bootstrap.childHandler(createInitializer(channelManagerActor, path));
+        bootstrap.childHandler(createInitializer(path));
         ChannelFuture future = bootstrap.bind(address);
         future.syncUninterruptibly();
         logger.info("server started at: " + address.getHostName() + ":" + address.getPort());
@@ -41,8 +38,8 @@ public class WebSocketServer {
         return future;
     }
 
-    private ChannelInitializer<Channel> createInitializer(ActorRef channelManagerActor, String path) {
-        return new WebSocketServerInitializer(channelManagerActor, path);
+    private ChannelInitializer<Channel> createInitializer(String path) {
+        return new WebSocketServerInitializer(path);
     }
 
     public void destroy() {

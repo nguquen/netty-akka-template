@@ -1,11 +1,9 @@
 package com.gnt.server.ws;
 
-import akka.actor.ActorRef;
 import com.gnt.server.Configuration;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
@@ -13,11 +11,9 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class WebSocketServerInitializer extends ChannelInitializer<Channel> {
     private final String path;
-    private final ActorRef channelManagerActor;
 
-    public WebSocketServerInitializer(ActorRef channelManagerActor, String path) {
+    public WebSocketServerInitializer(String path) {
         this.path = path;
-        this.channelManagerActor = channelManagerActor;
     }
 
     @Override
@@ -28,6 +24,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<Channel> {
         pipeline.addLast(new HttpObjectAggregator(Configuration.getMaxContentLength()));
         pipeline.addLast(new DefaultHttpRequestHandler(this.path));
         pipeline.addLast(new WebSocketServerProtocolHandler(this.path));
-        pipeline.addLast(new TextWebSocketFrameHandler(channelManagerActor));
+        pipeline.addLast(new TextWebSocketFrameHandler());
     }
 }
