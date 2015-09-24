@@ -1,8 +1,5 @@
 package com.gnt.server.ws;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import com.gnt.server.Akka;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;

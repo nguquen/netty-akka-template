@@ -1,4 +1,4 @@
-package com.gnt.server.ws;
+package com.gnt.server.ws.handler;
 
 /**
  * Created by leducthien on 9/23/15.
@@ -60,7 +60,12 @@ public class DefaultHttpRequestHandler extends SimpleChannelInboundHandler<FullH
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("", cause);
+        logger.error(cause.getMessage(), cause);
         ctx.close();
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+
     }
 }

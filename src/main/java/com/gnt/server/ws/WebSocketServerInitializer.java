@@ -1,6 +1,9 @@
 package com.gnt.server.ws;
 
 import com.gnt.server.Configuration;
+import com.gnt.server.ws.handler.BinaryWebSocketFrameHandler;
+import com.gnt.server.ws.handler.DefaultHttpRequestHandler;
+import com.gnt.server.ws.handler.TextWebSocketFrameHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -25,5 +28,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<Channel> {
         pipeline.addLast(new DefaultHttpRequestHandler(this.path));
         pipeline.addLast(new WebSocketServerProtocolHandler(this.path));
         pipeline.addLast(new TextWebSocketFrameHandler());
+        pipeline.addLast(new BinaryWebSocketFrameHandler());
     }
 }
